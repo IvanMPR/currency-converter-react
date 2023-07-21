@@ -1,13 +1,139 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --background-color: rgb(38, 70, 83); /* Charcoal */
+  --icon-color: rgb(42, 157, 143); /* Persian-green */
+  --button-color: rgb(231, 111, 81); /* Orange Yellow Crayola */
+  --main-text-color: rgb(255, 255, 255);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  background: var(--background-color);
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 3rem 0;
+  color: var(--main-text-color);
+}
+i {
+  color: var(--icon-color);
+  margin-bottom: 5rem;
+}
+
+.main-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto 3rem;
+}
+
+.opt-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 60rem;
+}
+
+.upper,
+.middle {
+  margin-bottom: 5rem;
+}
+
+select {
+  width: 10rem;
+  padding: 1rem;
+  font-size: 2rem;
+}
+
+input {
+  padding: 1rem;
+  width: 20rem;
+  font-size: 2rem;
+}
+
+.swap {
+  text-transform: uppercase;
+  cursor: pointer;
+  background: var(--button-color);
+  border: 0;
+  padding: 1rem 2rem;
+  width: 10rem;
+  color: #333;
+  font-size: 1.7rem;
+  transition: all 0.2s;
+}
+
+.swap:hover {
+  box-shadow: 0 2px 5px 5px rgba(51, 51, 51, 0.6);
+}
+
+.swap:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 3px 3px rgba(51, 51, 51, 0.8);
+}
+
+.exchange-rate {
+  font-size: 2rem;
+  color: var(--button-color);
+}
+
+@media only screen and (max-width: 300px) {
+  html {
+    font-size: 45%;
+  }
+  .lower,
+  .upper,
+  .middle {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 301px) and (max-width: 600px) {
+  html {
+    font-size: 50%;
+  }
+  body {
+    padding: 2rem;
+  }
+  .lower,
+  .upper,
+  .middle {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1100px) {
+  html {
+    font-size: 55%;
+  }
+  body {
+    padding: 2rem;
+  }
+  .lower,
+  .upper,
+  .middle {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width: 1101px) {
+  .lower,
+  .upper,
+  .middle {
+    width: 60rem;
+  }
 }
