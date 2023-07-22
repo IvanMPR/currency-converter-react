@@ -6,6 +6,8 @@ function App() {
   const [outputCurrency, setOutputCurrency] = useState("EUR");
   const [result, setResult] = useState("");
 
+  // function swapCurrency() {}
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -36,7 +38,7 @@ function App() {
           onSetBaseCurrencyValue={setBaseCurrencyValue}
         />
       </Select>
-      <SwapButton />
+      <SwapButton swapCurrency={swapCurrency} />
       <Select className="lower">
         <CurrencyList
           defaultValue={outputCurrency}
@@ -267,10 +269,12 @@ function Input({ value, onSetBaseCurrencyValue }) {
   );
 }
 
-function SwapButton() {
+function SwapButton({ swapCurrency }) {
   return (
     <div className="middle opt-menu">
-      <button className="swap">Swap</button>
+      <button className="swap" onClick={swapCurrency}>
+        Swap
+      </button>
       <p className="exchange-rate"></p>
     </div>
   );
