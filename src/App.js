@@ -5,8 +5,14 @@ function App() {
   const [baseCurrencyValue, setBaseCurrencyValue] = useState(1);
   const [outputCurrency, setOutputCurrency] = useState("EUR");
   const [result, setResult] = useState("");
+  const [swap, setSwap] = useState(false);
 
-  // function swapCurrency() {}
+  // function swapCurrency() {
+  //   console.log(baseCurrency, outputCurrency, "from first swapCurrency");
+  //   setBaseCurrency(() => outputCurrency);
+  //   setOutputCurrency(() => baseCurrency);
+  //   console.log(baseCurrency, outputCurrency, "from second swapCurrency");
+  // }
 
   useEffect(() => {
     async function fetchData() {
@@ -22,7 +28,8 @@ function App() {
       }
     }
     fetchData();
-  }, [baseCurrency, outputCurrency, baseCurrencyValue]);
+    // setSwap(false);
+  }, [baseCurrency, outputCurrency, baseCurrencyValue, swap]);
 
   return (
     <div className="main-box">
@@ -38,7 +45,14 @@ function App() {
           onSetBaseCurrencyValue={setBaseCurrencyValue}
         />
       </Select>
-      <SwapButton swapCurrency={swapCurrency} />
+      <SwapButton
+        baseCurrency={baseCurrency}
+        outputCurrency={outputCurrency}
+        setBaseCurrency={setBaseCurrency}
+        setOutputCurrency={setOutputCurrency}
+        swap={swap}
+        setSwap={setSwap}
+      />
       <Select className="lower">
         <CurrencyList
           defaultValue={outputCurrency}
@@ -269,10 +283,24 @@ function Input({ value, onSetBaseCurrencyValue }) {
   );
 }
 
-function SwapButton({ swapCurrency }) {
+function SwapButton({
+  baseCurrency,
+  outputCurrency,
+  setBaseCurrency,
+  setOutputCurrency,
+  swap,
+  setSwap,
+}) {
   return (
     <div className="middle opt-menu">
-      <button className="swap" onClick={swapCurrency}>
+      <button
+        className="swap"
+        onClick={function () {
+          setBaseCurrency(() => outputCurrency);
+          setOutputCurrency(() => baseCurrency);
+          setSwap(true);
+        }}
+      >
         Swap
       </button>
       <p className="exchange-rate"></p>
