@@ -6,6 +6,7 @@ function App() {
   const [baseCurrencyValue, setBaseCurrencyValue] = useState(1);
   const [outputCurrency, setOutputCurrency] = useState("EUR");
   const [result, setResult] = useState("");
+  const [rate, setRate] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -14,7 +15,9 @@ function App() {
           `https://v6.exchangerate-api.com/v6/${KEY}/pair/${baseCurrency}/${outputCurrency}/${baseCurrencyValue}`
         );
         const data = await res.json();
+        console.log(data);
         setResult(data.conversion_result.toFixed(2));
+        setRate(data.conversion_rate);
       } catch (err) {
         console.log(err);
       }
@@ -42,7 +45,9 @@ function App() {
         setBaseCurrency={setBaseCurrency}
         outputCurrency={outputCurrency}
         setOutputCurrency={setOutputCurrency}
+        rate={rate}
       />
+
       <Select className="lower">
         <CurrencyList
           className="lower"
@@ -273,6 +278,7 @@ function SwapButton({
   setBaseCurrency,
   outputCurrency,
   setOutputCurrency,
+  rate,
 }) {
   function swap() {
     setBaseCurrency(outputCurrency);
@@ -284,7 +290,7 @@ function SwapButton({
       <button className="swap" onClick={swap}>
         Swap
       </button>
-      <p className="exchange-rate"></p>
+      <p className="exchange-rate">{`1 ${baseCurrency} = ${rate} ${outputCurrency}`}</p>
     </div>
   );
 }
