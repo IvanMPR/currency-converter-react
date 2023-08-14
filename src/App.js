@@ -15,7 +15,6 @@ function App() {
           `https://v6.exchangerate-api.com/v6/${KEY}/pair/${baseCurrency}/${outputCurrency}/${baseCurrencyValue}`
         );
         const data = await res.json();
-        console.log(data);
         setResult(data.conversion_result.toFixed(2));
         setRate(data.conversion_rate);
       } catch (err) {
