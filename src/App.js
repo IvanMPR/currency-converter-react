@@ -1,18 +1,11 @@
 import { useState, useEffect } from "react";
 const KEY = "b16c5ec4a2375045f43ffe36";
+
 function App() {
   const [baseCurrency, setBaseCurrency] = useState("USD");
   const [baseCurrencyValue, setBaseCurrencyValue] = useState(1);
   const [outputCurrency, setOutputCurrency] = useState("EUR");
   const [result, setResult] = useState("");
-  const [swap, setSwap] = useState(false);
-
-  // function swapCurrency() {
-  //   console.log(baseCurrency, outputCurrency, "from first swapCurrency");
-  //   setBaseCurrency(() => outputCurrency);
-  //   setOutputCurrency(() => baseCurrency);
-  //   console.log(baseCurrency, outputCurrency, "from second swapCurrency");
-  // }
 
   useEffect(() => {
     async function fetchData() {
@@ -21,45 +14,42 @@ function App() {
           `https://v6.exchangerate-api.com/v6/${KEY}/pair/${baseCurrency}/${outputCurrency}/${baseCurrencyValue}`
         );
         const data = await res.json();
-        console.log(data);
-        setResult(data.conversion_result);
+        setResult(data.conversion_result.toFixed(2));
       } catch (err) {
         console.log(err);
       }
     }
     fetchData();
-    // setSwap(false);
-  }, [baseCurrency, outputCurrency, baseCurrencyValue, swap]);
+  }, [baseCurrency, outputCurrency, baseCurrencyValue]);
 
   return (
     <div className="main-box">
       <Title />
       <Select className="upper">
         <CurrencyList
-          defaultValue={baseCurrency}
           className="upper"
           setBaseCurrency={setBaseCurrency}
+          value={baseCurrency}
         />
         <Input
           value={baseCurrencyValue}
-          onSetBaseCurrencyValue={setBaseCurrencyValue}
+          setBaseCurrencyValue={setBaseCurrencyValue}
+          type="inp"
         />
       </Select>
       <SwapButton
         baseCurrency={baseCurrency}
-        outputCurrency={outputCurrency}
         setBaseCurrency={setBaseCurrency}
+        outputCurrency={outputCurrency}
         setOutputCurrency={setOutputCurrency}
-        swap={swap}
-        setSwap={setSwap}
       />
       <Select className="lower">
         <CurrencyList
-          defaultValue={outputCurrency}
           className="lower"
           setOutputCurrency={setOutputCurrency}
+          value={outputCurrency}
         />
-        <Input value={result} />
+        <Input value={result} type="out" />
       </Select>
     </div>
   );
@@ -81,25 +71,19 @@ function Select({ children, className }) {
 }
 
 function CurrencyList({
-  defaultValue,
   className,
   setBaseCurrency,
   setOutputCurrency,
-  baseCurrency,
-  outputCurrency,
+  value,
 }) {
   function handleChange(e) {
     return className === "upper"
       ? setBaseCurrency(e.target.value)
       : setOutputCurrency(e.target.value);
   }
+
   return (
-    <select
-      className="currencyList"
-      defaultValue={defaultValue}
-      onChange={handleChange}
-      value={className === "upper" ? baseCurrency : outputCurrency}
-    >
+    <select className="currencyList" onChange={handleChange} value={value}>
       <option value="USD">USD</option>
       <option value="EUR">EUR</option>
       <option value="JPY">JPY</option>
@@ -270,14 +254,15 @@ function CurrencyList({
   );
 }
 
-function Input({ value, onSetBaseCurrencyValue }) {
+function Input({ value, setBaseCurrencyValue, type }) {
   return (
     <div className="input-wrapper">
       <input
-        type="number"
+        type={type === "inp" ? "number" : "text"}
+        readOnly={type === "out" ? true : false}
         className="base-input"
         value={value}
-        onChange={(e) => onSetBaseCurrencyValue(Number(e.target.value))}
+        onChange={(e) => setBaseCurrencyValue(Number(e.target.value))}
       />
     </div>
   );
@@ -285,22 +270,18 @@ function Input({ value, onSetBaseCurrencyValue }) {
 
 function SwapButton({
   baseCurrency,
-  outputCurrency,
   setBaseCurrency,
+  outputCurrency,
   setOutputCurrency,
-  swap,
-  setSwap,
 }) {
+  function swap() {
+    setBaseCurrency(outputCurrency);
+    setOutputCurrency(baseCurrency);
+  }
+
   return (
     <div className="middle opt-menu">
-      <button
-        className="swap"
-        onClick={function () {
-          setBaseCurrency(() => outputCurrency);
-          setOutputCurrency(() => baseCurrency);
-          setSwap(true);
-        }}
-      >
+      <button className="swap" onClick={swap}>
         Swap
       </button>
       <p className="exchange-rate"></p>
